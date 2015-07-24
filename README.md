@@ -1,3 +1,6 @@
+Remote Execution and Job Orchestration
+https://richnusgeeks.wordpress.com/2015/07/03/remote-execution-and-job-orchestration/
+
 Python and Instant GUIs
 https://richnusgeeks.wordpress.com/2012/05/15/python-and-instant-guis/
 
