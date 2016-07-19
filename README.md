@@ -16,13 +16,13 @@ Extending Python via Shared Libraries
 http://www.opensourceforu.com/author/ankur-kumar-sharma/
 
 C and C++ Interpreters
-http://nnc3.com/LM10/Magazine/Archive/2010/119/060-064_c-inter/article.html
+https://richnusgeeks.files.wordpress.com/2016/02/interpretation_lpm.pdf
 
 Vala and Genie
-http://nnc3.com/LM10/Magazine/Archive/2010/118/056-060_valagenie/article.html
+https://richnusgeeks.files.wordpress.com/2016/02/inthebottle_lpm1.pdf
 
 Add GUI elements to your scripts
-http://nnc3.com/LM10/Magazine/Archive/2010/114/064-070_dialog/article.html
+https://richnusgeeks.files.wordpress.com/2016/02/dialog_lpm.pdf
 
 GeeksZine
 https://richnusgeeks.wordpress.com/category/geekszine/
