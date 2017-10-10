@@ -1,3 +1,6 @@
+Taming the cloud: Provisioning with Terraform
+http://opensourceforu.com/2017/10/taming-cloud-provisioning-terraform/
+
 Remote Execution and Job Orchestration
 https://richnusgeeks.wordpress.com/2015/07/03/remote-execution-and-job-orchestration/
 
