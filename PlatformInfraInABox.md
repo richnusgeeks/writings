@@ -108,3 +108,130 @@ A. Microservices are the ultimate goal of cloud native journey and containers
    microservices, most of the times. The container and microservices are only
    the better ways to solve imparity and coupling problems respectively.
 
+Q. Interesting, tell me more about how to take advantage of 12factor through the   minimal changes?
+A. Ok, let's take a step forward here and then another backward (not Two Steps
+   Behind as per Def Lepperd :-)) to understand more. Nothing comes free so are
+   the microservices architecture and containerization. Following is an image
+   showing [The Microservices Hierarchy of Needs](https://medium.com/@bibryam/microservices-hierarchy-of-needs-151df49fc678) to run microservices with containers <Insert Image Below>:
+   
+   If we go through the Kubernetes (just ignore it as a platform for containers
+   in this section) vertical then we could see many of these needs are required
+   in the non-container non-microservices world also to create manageable, more
+   intelligent and less painful systems. Didn't we require Self Healing,
+   API Gateway and Service Security, Service Discovery and Load Balancing,
+   Centralized Logging and Config Management, Health Checks and Recovery etc. in
+   non-cloud native infra? Yes, we required these necessary pieces always as per
+   different urgency deadlines but achieving those wasn't easy or folks were in
+   hurry to build in ad-hoc ways or something else.
+
+   You could think of containers as the mechanism providing two main advantages
+   out of the box: first, an *immutable universal packaging format* which works
+   out of the box everywhere running over GNU/Linux, Windows and Mac OS. Second,
+   it gives us the capability to *limit computing resources* to pack and run
+   multiple components together in a more efficient, robust and controlled
+   mannner. You should consider using containers to unify and simplify your
+   automation tooling required even if you are not using containers for your
+   application services, on your journey towards cloud native.
+
+   If you need to do it similar in the non-containers only VMs world, then first
+   clearly define each server structure in form of *server roles* e.g. what all
+   versioned components it's suppossed to pack and mechanism to verify those,
+   what are their runtime configurations and mechanism to verify that at runtime
+   etc. Then we need to ensure that all the runtime processes are subjected to
+   the various resources limits ensuring no process is unbound to steal all the
+   resources from the other processes responsible for the overall good for the
+   VM. It also requires some inbuilt self-healing process baked-in to keep on
+   resolving the failures. Finally, you generate the various roles machine
+   images based upon their respective baseline structure of components and
+   configurations are oulled from a central registry of configurations and
+   the servers have the required mechanism to pull the necessary configs and
+   apply those to the processes.
+
+Q. I heard this concept of self configuration and healing in the context of
+   containers many times but never saw it in the VMs world?
+
+A. Yes, the dynamic nature of containers with an orchestration ecosystem around
+   it accomplish the auto config and healing out of the box as those are the
+   necessary building blocks already embedded within the containers
+   orchestrators. You might have heard about [GitOps](https://www.weave.works/technologies/gitops/) which is a cloud native methodology based upon the same idea
+   to propagate changes automatically from a centralized single source of truth
+   to the infrastructure pieces pulling and applying the changes. Similar could
+   be done in the VMs world through a framework which provides the capabilities
+   of indexing the config from a single source of truth and the associated
+   agent running on VMs providing config templating and some processes
+   orchestration functionality. 
+
+Q. You spoke about servers but didn't mention configuration management even at
+   a single place, why?
+
+A. Any [configuration management tool is an antipattern](https://hackernoon.com/configuration-management-is-an-antipattern-e677e34be64c) most of the time in the
+   cloud native world. You need those tools only during the creation of machine
+   images (and maybe some edge cases like some after-provisioning needs in long
+   running stateful roles). Old ways of always trying to keep on imposing the
+   desired states for your servers through the config management tools and then
+   keeping on fighting with their idempotency promises and eventual convergence 
+   only gave birth to the immutable infra pattern. We also need to ensure using
+   lightweight push mode config management tools to cut the unnecessary
+   complications of managing those just to cater a small functionality in the
+   cloud native lifecycle.
+
+Q. You mentioned verification mechanism multiple times during defining various
+   server roles, why?
+
+A. So simple, if you can't verify it against the unnecessary baseline then you
+   can't prove it correct. The test driven development has been the mantra in
+   the software for the last many years so why shouldn't it be considered
+   necessary to platform/infra components in the age of IAC? These verification
+   mechanisms form different stages of [acceptance testing](https://en.wikipedia.org/wiki/Acceptance_testing) to cross various gates in the cloud native journey
+   of taking software from a concept to the final delivery and deployment. Those
+   also form parts of the [observability](https://en.wikipedia.org/wiki/Observability).
+
+Q. It's a bit confusing that the verification mechanisms are gonna form parts of
+   the observability?
+
+A. Ok, let's talk about only monitoring and alerting aspects from the
+   observability world. In a common usage, the monitoring and alerting is the
+   combined mechanism to measure some state of a running system and notify the
+   drifts based upon the state baseline. But what about ensuring everything
+   that forms a role is also in place and good till and after a server reaches
+   to the running state? We need this whole start to running state transition
+   data to reason out if all good and if not then deriving clues. In fact, the
+   monitoring and alerting mechanism at each transition state of a server is a
+   prerequisite not the after-thought requirement in the cloud native world. In
+   other words, even an empty server requires its monitoring and alerting
+   baked-in to throw the red alerts first and then we keep on filling the
+   necessary components and configs to establish its green desired state.
+
+Q. Why are you crazy about Free Open Source tooling in the age of hosted
+   services?
+
+A. It's not about any particular tooling but exploring and zero upon the
+   necessary functionalities first. Nothing beats the FOSS tools to start
+   working on the goals right away with full control avoiding any resistance or
+   other unnecessary blocking requirements like money, access policies etc. The
+   hosted vs running your own comparison is the next step and that's always
+   based upon the cost, time and features comparison. Anyway, [the cloud is just
+   someone else's computer] running on the FOSS :-).
+
+Q. Ok, what are the necessary criteria for choosing the tools for the cloud
+   native world?
+
+A. We need a proper balance between the features provided and the efforts to
+   run and manage the tools. So the operations simplicity is also a very
+   important criteria as the tools should work for us not vice versa. Also
+   the cloud native thinking is being a pessimist regarding the cloud based
+   distributed systems due to the [Fallacies of distributed computing](https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing) and even Amazon CTO
+   says [Failures are a given and everything will eventually fail over time](https://www.allthingsdistributed.com/2016/03/10-lessons-from-10-years-of-aws.html).
+
+   So we need to keep at-least 2 (Plan A/B) choices to avoid single tool of
+   failure and better we keep 3 choices (plan C as well) to follow the
+   [CAP theorem] inspired <Insert Image for Good-Cheap-Fast>:
+
+   The cloud native tooling is declarative in the majority of the cases; you
+   express you intentions of what to do in terms of the building blocks provided
+   by the tooling and the tooling decides how to do it. It's a departure from
+   the traditional procedural tooling where you need to encode everything in
+   terms of how to do it. Practically, any good tooling provides from 50-80% of
+   the functionality required to fulfill all the desired use cases. The rest we
+   need to fill in so it's very necessary to consider the extension capabilities
+   of the tool in terms of the declarative api, as a main criteria.
