@@ -235,3 +235,113 @@ A. We need a proper balance between the features provided and the efforts to
    the functionality required to fulfill all the desired use cases. The rest we
    need to fill in so it's very necessary to consider the extension capabilities
    of the tool in terms of the declarative api, as a main criteria.
+
+Q. What tooling is required for the GitOps kind of self configuring and healing
+   infra in the VMs world?
+
+A. First you need a repeatable mechanism to create versioned machine images
+   consisting of the necessary configs with variabled through [packer](https://github.com/hashicorp/packer) which ...
+
+Q. You are crazy about the acceptance testing for everything. Now show us the
+   cloud native ways to do that?
+
+A. Sure, fasten your seat belt for our journey into various acceptance testing
+   options. Here are our options, starting from the simpler (few hours/days
+   kinds of effort) to complicated (few weeks/months kind of effort):
+
+   Plan A is GOlang based ServerSpec alternative tool for validating a server's    provisioning. It's driven by YAML description of the acceptance tests you
+   want to perform against a server. The same project also provides a shell
+   wrapper known as DGOSS for the docker containers validation as well as
+   another wrapper DCGOSS to validate the docker containers based upon
+   docker-compose manifests. Operationally, goss is a static binary for
+   GNU/Linux which is just a grab, drop in a machine and all ready to validate
+   our VMs/containers.
+
+   The goss binary needs to get copied to the machines if you are validating
+   your VM based server roles as it works in local mode only. So it's
+   preferred to bake it into your base images which are used to bring up the
+   VMs. The [goss community contributions](https://github.com/aelsabbahy/goss#community-contributions) provide some additional addon functionalities/plugins for
+   it including few for ansible and a [packer plugin to run goss as a provision step](https://github.com/YaleUniversity/packer-provisioner-goss) to impose
+   minimal acceptance testing at image build time only. It currently [supports many resources](https://github.com/aelsabbahy/goss#supported-resources) to model
+   various abstractions provided within a GNU/Linux based machine e.g. *package*, *file*, *port*, *service*, *command*, *process*, *kernel-param* etc. Each
+   resource with its relevant properties is included in a yaml (or json) file (by default, goss.yaml but configurable) to create the whole acceptance testing
+  manifest against which the goss runtime validation is executed. The quickest
+  way to create the initial goss manifest is using [autoadd](https://github.com/aelsabbahy/goss/blob/master/docs/manual.md#autoadd-aa---auto-add-all-matching-resources-to-test-suite), on a machine with the correct desired state (or editing
+  the resources properties after generating if desired state is not met), to add
+  all existing matching resources. Further resources to this manifest could be
+  added through goss command [add](https://github.com/aelsabbahy/goss/blob/master/docs/manual.md#add-a---add-system-resource-to-test-suite). It also provides
+  [templating](https://github.com/aelsabbahy/goss/blob/master/docs/manual.md#templates) in its manifest to allow for dynamic or conditional tests and populating
+  variables supplied from environmental and/or a vars file. During validation,
+  it provides retries with a configurable delay in-between and an overall time
+  out as well as configurable output reporting format e.g. *documentation*, *json*, *[tap](https://en.wikipedia.org/wiki/Test_Anything_Protocol)*, *nagios/sensu*, *rspecish* etc. Last but not the least, the goss provides an option to expose
+  your [test suite as a health endpoint](https://github.com/aelsabbahy/goss/blob/master/docs/manual.md#serve-s---serve-a-health-endpoint) listening on your
+  server on a configurable port. It has a pretty nice [manual](https://github.com/aelsabbahy/goss/blob/master/docs/manual.md) to explore it in more details.
+
+  Now let's come to the dgoss for acceptance testing our containers images. The
+  dgoss wrapper script [run](https://github.com/aelsabbahy/goss/blob/master/extras/dgoss/README.md#run) launches a container using the provided docker image,
+  copies goss binary and its test suite to that container, runs the goss
+  validation in the container and finally deletes the container. The script also
+  provides an [edit](https://github.com/aelsabbahy/goss/blob/master/extras/dgoss/README.md#edit) command to install the goss binary into the container and drop
+  you into the spawned container shell where you could generate test suite
+  automatically through autoadd/add. Once you quit the container shell, the
+  generated goss test suites are copied back to the directory from where the
+  dgoss was launched. The dgoss also takes [env vars](https://github.com/aelsabbahy/goss/blob/master/extras/dgoss/README.md#environment-vars-and-defaults) to
+  alter its behavior. You should create a [driver container image](https://github.com/richnusgeeks/devops/blob/master/InfraValidation/scripts/Dockerfile_DGoss)
+  packing goss, dgoss (optionally, dcgoss too), docker static binary (optionally, docker-compose too in case putting the dcgoss) to launch your dgoss test
+  suites mounted from here, to use that in your automation pipeline.
+
+  Below shown are test run screenshots (just for a quick feel) from the driver container to run a bogus test suite (generated through autoadd in a container
+  with sshd running) against a test image <Insert Images Below>:
+
+  Plan B is the daddy of most of the acceptance testing tooling proposed in this
+  doc, known as [inspec](https://www.inspec.io/). It's a very feature rich
+  extensive framework which turns your compliance, security and other policy
+  requirements into automated tests across containers, machines and cloud
+  resources. It provides a DSL based upon ruby to create test suites to make use
+  of currently 80+ resources covering from OS to AWS/Azure/GCP level aspects.
+
+  Some not so good parts of the inspec are: its a bit complicated ecosystem and 
+  reliance on ruby which is not a fast runtime in case of resources exceeding
+  hundreds and [current lack of scan parallelism](https://github.com/inspec/inspec/issues/3010).
+
+  Plan C is a container specific FOSS framework from google folks known as
+  [Container Structure Tests](https://github.com/GoogleContainerTools/container-structure-test) which they used internally before releasing it publicly, as per
+  their [blog post](https://opensource.googleblog.com/2018/01/container-structure-tests-unit-tests.html). It's similar to the goss operationally, being a drop
+  n play golang static binary to use natively or in a conatainer (recommended way, a [driver container image](https://github.com/richnusgeeks/devops/blob/master/InfraValidation/scripts/Dockerfile_CSTest)). It's also a declarative framework
+  utilizing the yaml (or json) to model the tests around running commands and
+  comparing their output, files existence and their content, and container
+  metadata. You don't require the docker engine to run its file/metadata tests
+  as the framework provides a tar driver in addition to the default docker
+  driver. It also converts the docker image under testing to an in-memory
+  filesystem and could perform containers content examination even for images
+  without a shell. Having the [goss kind of resources in this framework](https://github.com/GoogleContainerTools/container-structure-test/issues/234) along with
+  its metadata testing features would make it a complete tool providing
+  declarative acceptance testing for containers.
+
+  Plan D is a bit different from the tooling proposed till now as it's a
+  procedural framework, not our desired declarative one, to accept test
+  provisioned machines and docker images. But still [testinfra](https://github.com/philpep/testinfra) is a useful python framework to mention here. It aims to
+  be a more featureful [serverspec alternative in python](https://testinfra.readthedocs.io/en/latest/) and is based upon powerful [pytest](https://docs.pytest.org/en/latest/) testing engine.
+
+  Plan E is actually not a finished framework or tool but a golang library known
+  as [terratest](https://github.com/gruntwork-io/terratest). It provides a
+  variety of helper functions and patterns for common infrastructure testing
+  tasks, including: *Testing Terraform Code*, *Packer templates*, *Docker images*, *Executing commands on servers over SSH*, *Working with AWS/Azure/GCP/Kubernetes APIs*, *Testing Helm Charts*, *Making HTTP requests*, *Running shell commands* and much more.
+
+Q. You mentioned bringing up the whole stack anywhere but what about the public
+   cloud dependencies?
+
+A. You got it correct, the journey is towards bringing the whole stack (or max
+   of it, practically) anywhere including laptop and in-between ci/cd. There are
+   FOSS components available to mock/simulate the cloud provider services which
+   are useful to unblock us at different stages on our cloud native journey. In
+   fact, now all the cloud providers have realized it and officially are
+   providing ways to play with some of their services locally. AWS currently
+   provides [aws-stepfunction-local], [aws-iot-greengrass],
+   [aws-codebuild-local], [aws-ecs-local-container-endpoints] and
+   [dynamodb-local] for in-a-box testing. GCP [bigtable, datastore, filestore and pubsub](https://github.com/richnusgeeks/devops/blob/master/CloudInfraMocking/scripts/Dockerfile_GCPEMU) all could be [launched locally through a docker container](https://github.com/richnusgeeks/devops/blob/master/CloudInfraMocking/scripts/create_gcpemulators_stack_docker.sh). There is a very [featureful](https://github.com/spulec/moto/blob/master/IMPLEMENTATION_COVERAGE.md) and active python
+   library Moto (logical guess, Mock+boto) which also provides a [stand-alone server mode](https://github.com/spulec/moto#stand-alone-server-mode) to run it
+   with other languages.
+
+   The most complete open source solution (wrapping many other aws mocking/simulation) FOSS components including moto) to run 20+ AWS services locally for
+   integration testing is [Localstack](https://github.com/localstack/localstack).  Below is the block diagram taken from their [page](https://localstack.cloud/) <Inset Image Below>:
