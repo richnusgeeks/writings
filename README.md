@@ -1,3 +1,21 @@
+Musings from a Life Hacker: Goodbye Fear, Hello Zen!
+https://medium.com/@ankur.floss/musings-from-a-life-hacker-goodbye-fear-hello-zen-ab1e11196376
+
+Nativity in the Cloud
+https://medium.com/@ankur.floss/nativity-in-the-cloud-f14d9b197306
+
+It's a Virtual Machine... It's a Container...
+https://www.linkedin.com/pulse/its-virtual-machine-container-ankur-kumar?trk=portfolio_article-card_title
+
+L(X)D Doping for a Minimalist
+https://www.linkedin.com/pulse/lxd-doping-minimalist-ankur-kumar?trk=portfolio_article-card_title
+
+A Tale of Docker, macOS and [xv]hyve
+https://www.linkedin.com/pulse/cloud-computing-art-instant-salad-making-ankur-kumar?trk=portfolio_article-card_title
+
+Cloud Computing and the Art of instant Salad making
+https://www.linkedin.com/pulse/cloud-computing-art-instant-salad-making-ankur-kumar?trk=portfolio_article-card_title
+
 Taming the cloud: Provisioning with Terraform
 http://opensourceforu.com/2017/10/taming-cloud-provisioning-terraform/
 
