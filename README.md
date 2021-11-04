@@ -11,7 +11,7 @@ L(X)D Doping for a Minimalist
 https://www.linkedin.com/pulse/lxd-doping-minimalist-ankur-kumar?trk=portfolio_article-card_title
 
 A Tale of Docker, macOS and [xv]hyve
-https://www.linkedin.com/pulse/cloud-computing-art-instant-salad-making-ankur-kumar?trk=portfolio_article-card_title
+https://www.linkedin.com/pulse/tale-docker-macos-xvhyve-ankur-kumar?trk=pulse-article_more-articles_related-content-card
 
 Cloud Computing and the Art of instant Salad making
 https://www.linkedin.com/pulse/cloud-computing-art-instant-salad-making-ankur-kumar?trk=portfolio_article-card_title
