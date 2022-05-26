@@ -1,3 +1,6 @@
+Goodbye virtual machines, hello container machines
+https://www.admin-magazine.com/Archive/2022/68/Goodbye-virtual-machines-hello-container-machines
+
 Musings from a Life Hacker: Goodbye Fear, Hello Zen!
 https://medium.com/@ankur.floss/musings-from-a-life-hacker-goodbye-fear-hello-zen-ab1e11196376
 
@@ -26,15 +29,19 @@ Python and Instant GUIs
 https://richnusgeeks.wordpress.com/2012/05/15/python-and-instant-guis/
 
 Spicing up the Console for Fun and Profit, Part 2
+https://www.opensourceforu.com/2011/11/spicing-up-console-for-fun-profit-2/
 
 Spicing up the Console for Fun and Profit, Part 1
+https://www.opensourceforu.com/2011/08/spicing-up-console-for-fun-profit-1/
 
 Turbo Charge Python Apps with Speed, Part 2
+https://www.opensourceforu.com/2010/12/turbo-charge-python-apps-with-speed-part-2/
 
 Turbo Charge Python Apps with Speed, Part 1
+https://www.opensourceforu.com/2010/07/turbo-charge-python-apps-with-speed-part-1/
 
 Extending Python via Shared Libraries
-http://www.opensourceforu.com/author/ankur-kumar-sharma/
+https://www.opensourceforu.com/2010/05/extending-python-via-shared-libraries/
 
 C and C++ Interpreters
 https://richnusgeeks.files.wordpress.com/2016/02/interpretation_lpm.pdf
