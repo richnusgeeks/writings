@@ -1,3 +1,6 @@
+Masquerade
+https://www.linux-magazine.com/Issues/2022/263/OliveTin-and-Script-Server
+
 Presentation as Code
 https://www.linux-magazine.com/Issues/2022/262/Present-Slide-Creator
 
