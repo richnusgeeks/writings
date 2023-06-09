@@ -1,3 +1,6 @@
+Acceptance as Code
+https://www.admin-magazine.com/Archive/2023/73/Verifying-your-configuration
+
 Goodbye virtual machines, hello microVMs
 https://www.admin-magazine.com/Archive/2022/71/Goodbye-virtual-machines-hello-microVMs
 
