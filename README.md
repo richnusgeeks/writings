@@ -1,3 +1,9 @@
+Mocking and emulating AWS and GCP services
+https://www.admin-magazine.com/Archive/2024/82/Mocking-and-emulating-AWS-and-GCP-services
+
+What's your status (page)?
+https://www.admin-magazine.com/Archive/2023/78/What-s-your-status-page
+
 Old but Still Gold
 https://www.admin-magazine.com/Archive/2023/77/A-watchdog-for-every-modern-ix-server
 
