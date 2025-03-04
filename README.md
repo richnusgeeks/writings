@@ -1,3 +1,6 @@
+Raspberry PI Pico: The Wonder Board for IoT Applications
+https://www.opensourceforu.com/2025/02/raspberry-pi-pico-the-wonder-board-for-iot-applications/
+
 Mocking and emulating AWS and GCP services
 https://www.admin-magazine.com/Archive/2024/82/Mocking-and-emulating-AWS-and-GCP-services
 
